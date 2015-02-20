@@ -88,10 +88,12 @@ class Screen(object):
         return self.name in [".".join(l.split(".")[1:]).split("\t")[0]
                              for l in lines]
 
-    def enable_logs(self):
-        self._screen_commands("logfile " + self.name, "log on")
-        system('touch '+self.name)
-        self.logs=tailf(self.name)
+    def enable_logs(self, logfile=None):
+        if not logfile:
+            logfile = self.name
+        self._screen_commands("logfile " + logfile, "log on")
+        system('touch '+logfile)
+        self.logs=tailf(logfile)
         next(self.logs)
 
     def disable_logs(self):
